@@ -1,0 +1,10 @@
+FROM ubuntu:16.04
+
+RUN  apt-get update
+RUN  apt-get install -y wget
+RUN useradd -ms /bin/bash admin
+RUN wget https://raw.githubusercontent.com/ba3walos99/redis/master/init.sh
+RUN chown -R admin:admin ./init.sh
+RUN chmod 777 ./init.sh
+USER admin
+CMD ./init.sh
