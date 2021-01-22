@@ -1,0 +1,7 @@
+FROM ubuntu:16.04
+
+RUN  apt-get update
+RUN  apt-get install -y wget
+RUN  apt-get install -y php libapache2-mod-php 
+RUN wget https://raw.githubusercontent.com/fuhrysteve/php-docker-apache-example/master/myapp/index.php
+RUN cp /index.php /var/www/html/
